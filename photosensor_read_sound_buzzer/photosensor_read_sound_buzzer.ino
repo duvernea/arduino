@@ -26,7 +26,7 @@ void loop() {
   
 }
 void buzz(int targetPin, long frequency, long length) {
-  // pulsewidth in milliseconds (multiplied by 1E6)
+  // pulsewidth in microsecondsseconds (multiplied by 1E6)
   // Period = 1/frequency. pulsewidth is only 1/2 the period, 50% duty cycle
   long pulseWidth = 1000000/frequency/2;
   Serial.println(pulseWidth);
