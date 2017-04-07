@@ -106,6 +106,9 @@
 #define NOTE_DS8 4978
 
 #define melodyPin 3
+
+int BPM = 150;
+
 //Mario main theme melody
 int melody[] = {
   NOTE_E7, NOTE_E7, 0, NOTE_E7,
@@ -187,13 +190,13 @@ int underworld_melody[] = {
 int underworld_tempo[] = {
   16, 16, 16, 16,
   16, 16, 4,
-  4,
+  2,
   16, 16, 16, 16,
   16, 16, 4,
-  4,
+  2,
   16, 16, 16, 16,
   16, 16, 4,
-  4,
+  2,
   16, 16, 16, 16,
   16, 16, 4,
   6, 24, 24, 24,
@@ -232,7 +235,9 @@ void sing(int s) {
       // to calculate the note duration, take one second
       // divided by the note type.
       //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-      int noteDuration = 1000 / underworld_tempo[thisNote];
+      // int noteDuration = 1000 / underworld_tempo[thisNote];
+      int noteDuration = (int)((1000 * (60 * 4 / BPM)) / underworld_tempo[thisNote] + 0.);
+
 
       buzz(melodyPin, underworld_melody[thisNote], noteDuration);
 
@@ -255,7 +260,9 @@ void sing(int s) {
       // to calculate the note duration, take one second
       // divided by the note type.
       //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-      int noteDuration = 1000 / tempo[thisNote];
+      // int noteDuration = 1000 / tempo[thisNote];
+      int noteDuration = (int)((1000 * (60 * 4 / BPM)) / tempo[thisNote] + 0.);
+
 
       buzz(melodyPin, melody[thisNote], noteDuration);
 
