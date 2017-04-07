@@ -173,9 +173,10 @@ int underworld_melody[] = {
   0,
   NOTE_F3, NOTE_F4, NOTE_D3, NOTE_D4,
   NOTE_DS3, NOTE_DS4, 0,
-  0, NOTE_DS4, NOTE_CS4, NOTE_D4,
-  NOTE_CS4, NOTE_DS4,
-  NOTE_DS4, NOTE_GS3,
+  
+  0, NOTE_DS4, NOTE_D4, NOTE_CS4,
+  NOTE_C4, NOTE_DS4,
+  NOTE_D4, NOTE_GS3,
   NOTE_G3, NOTE_CS4,
   NOTE_C4, NOTE_FS4, NOTE_F4, NOTE_E3, NOTE_AS4, NOTE_A4,
   NOTE_GS4, NOTE_DS4, NOTE_B3,
@@ -214,8 +215,8 @@ void setup(void)
 void loop()
 {
   //sing the tunes
-  sing(1);
-  sing(1);
+  // sing(1);
+  // sing(1);
   sing(2);
 }
 int song = 0;
