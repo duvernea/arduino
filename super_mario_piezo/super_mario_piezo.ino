@@ -3,12 +3,7 @@
 
 #define melodyPin 3
 #define SECONDS_PER_MINUTE 60
-
-int BPM = 150;
-
-Note test_melody[] = {
-{NOTE_E7, 16 },
-{NOTE_D7, 8 }};
+#define BPM 150
 
 void setup(void)
 {
@@ -16,12 +11,11 @@ void setup(void)
 }
 void loop()
 {
-  //sing the tunes
-  sing(mario_overworld_melody);
-  sing(mario_underworld_melody);
+  play(mario_overworld_melody);
+  play(mario_underworld_melody);
 }
 
-void sing(Note song[]) {
+void play(Note song[]) {
   // iterate over the notes of the melody:
     int size = sizeof(song) / sizeof(song[0]);
     for (int thisNote = 0; thisNote < size; thisNote++) {
