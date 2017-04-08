@@ -1,5 +1,35 @@
 
+#include "note.h"
+
 //Mario main theme melody
+
+Note mario_overworld_melody[] = {
+{NOTE_E7, 12 },{NOTE_E7, 12},{0, 12},{NOTE_E7, 12},
+{0, 12},{NOTE_C7, 12},{NOTE_E7, 12},{0, 12},
+{NOTE_G7, 12},{0, 12},{0, 12},{0, 12},
+{NOTE_G6, 12},{0, 12},{0, 12},{0, 12},
+
+{NOTE_C7, 12},{0, 12},{0, 12},{NOTE_G6, 12},
+{0, 12},{0, 12},{NOTE_E6, 12},{0, 12},
+{0, 12},{NOTE_A6, 12},{0, 12},{NOTE_B6, 12},
+{0, 12},{NOTE_AS6, 12},{NOTE_A6, 12},{0, 12},
+
+{NOTE_G6, 9},{NOTE_E7, 9},{NOTE_G7, 9},
+{NOTE_A7, 12},{0, 12},{NOTE_F7, 12},{NOTE_G7, 12},
+{0, 12},{NOTE_E7, 12},{0, 12},{NOTE_C7, 12},
+{NOTE_D7, 12},{NOTE_B6, 12},{0, 12},{0, 12},
+
+{NOTE_C7, 12},{0, 12},{0, 12},{NOTE_G6, 12},
+{0, 12},{0, 12},{NOTE_E6, 12},{0, 12},
+{0, 12},{NOTE_A6, 12},{0, 12},{NOTE_B6, 12},
+{0, 12},{NOTE_AS6, 12},{NOTE_A6, 12},{0, 12},
+
+{NOTE_G6, 9},{NOTE_E7, 9},{NOTE_G7, 9},
+{NOTE_A7, 12},{0, 12},{NOTE_F7, 12},{NOTE_G7, 12},
+{0, 12},{NOTE_E7, 12},{0, 12},{NOTE_C7, 12},
+{NOTE_D7, 12},{NOTE_B6, 12},{0, 12},{0, 12},
+};
+
 int melody[] = {
   NOTE_E7, NOTE_E7, 0, NOTE_E7,
   0, NOTE_C7, NOTE_E7, 0,
