@@ -15,68 +15,24 @@ void setup(void)
 }
 void loop()
 {
-  Note temp = test_melody[0];
-  int pitch = temp.pitch;
-  int duration = temp.duration;
   //sing the tunes
-  sing(1);
-  sing(1);
-  sing(2);
+  sing(mario_overworld_melody);
+  sing(mario_underworld_melody);
+
 }
-int song = 0;
 
-void sing(int s) {
+void sing(Note song[]) {
   // iterate over the notes of the melody:
-  song = s;
-  if (song == 2) {
-    Serial.println(" 'Underworld Theme'");
-    int size = sizeof(underworld_melody) / sizeof(int);
+    int size = sizeof(song) / sizeof(song[0]);
     for (int thisNote = 0; thisNote < size; thisNote++) {
+      int noteDuration = (int)((1000 * (60 * 4 / BPM)) / song[thisNote].duration + 0.);
+      buzz(melodyPin, song[thisNote].pitch, noteDuration);
 
-      // to calculate the note duration, take one second
-      // divided by the note type.
-      //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-      // int noteDuration = 1000 / underworld_tempo[thisNote];
-      int noteDuration = (int)((1000 * (60 * 4 / BPM)) / underworld_tempo[thisNote] + 0.);
-
-
-      buzz(melodyPin, underworld_melody[thisNote], noteDuration);
-
-      // to distinguish the notes, set a minimum time between them.
-      // the note's duration + 30% seems to work well:
-      int pauseBetweenNotes = noteDuration * 1.30;
-      delay(pauseBetweenNotes);
-
+      // to separate the notes, set a minimum time between them. + 30% seems to work well.
+      delay(noteDuration * 1.30);
       // stop the tone playing:
       buzz(melodyPin, 0, noteDuration);
-
-    }
-
-  } else {
-
-    Serial.println(" 'Mario Theme'");
-    int size = sizeof(melody) / sizeof(int);
-    for (int thisNote = 0; thisNote < size; thisNote++) {
-
-      // to calculate the note duration, take one second
-      // divided by the note type.
-      //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-      // int noteDuration = 1000 / tempo[thisNote];
-      int noteDuration = (int)((1000 * (60 * 4 / BPM)) / tempo[thisNote] + 0.);
-
-
-      buzz(melodyPin, melody[thisNote], noteDuration);
-
-      // to distinguish the notes, set a minimum time between them.
-      // the note's duration + 30% seems to work well:
-      int pauseBetweenNotes = noteDuration * 1.30;
-      delay(pauseBetweenNotes);
-
-      // stop the tone playing:
-      buzz(melodyPin, 0, noteDuration);
-
-    }
-  }
+     }
 }
 
 void buzz(int targetPin, long frequency, long length) {
