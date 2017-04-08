@@ -30,7 +30,7 @@ void sing(Note song[]) {
       // currently assumes quarter note gets the beat
       int beatsPerSecond = (int)(BPM / SECONDS_PER_MINUTE);
       int secondsPerMeasure = (int) beatsPerMeasure/beatsPerSecond;
-      int noteDuration = (int)secondsPerMeasure / (song[thisNote].duration + 0.);
+      int noteDuration = (int) 1E6 * secondsPerMeasure / (song[thisNote].duration + 0.);
       buzz(melodyPin, song[thisNote].pitch, noteDuration);
 
       // to separate the notes, set a minimum time between them. + 30% seems to work well.
@@ -41,14 +41,14 @@ void sing(Note song[]) {
 }
 
 void buzz(int targetPin, long frequency, long length) {
-  long delayValue = 1000000 / frequency / 2; // calculate the delay value between transitions
-  //// 1E6 microseconds, divided by freq, div by 2 for 50% duty cycle
-  long numCycles = frequency * length / 1000; // calculate the number of cycles for proper timing
-  //// total cycles = frequency (cycle/sec) * number of seconds 
+  // 1E6 microseconds, divided by freq, div by 2 for 50% duty cycle
+  long pulseWidth = 1E6 / frequency / 2;
+  // total cycles = frequency (cycle/sec) * number of seconds 
+  long numCycles = frequency * length;
   for (long i = 0; i < numCycles; i++) { 
     digitalWrite(targetPin, HIGH);
-    delayMicroseconds(delayValue); 
+    delayMicroseconds(pulseWidth); 
     digitalWrite(targetPin, LOW); 
-    delayMicroseconds(delayValue); 
+    delayMicroseconds(pulseWidth); 
   }
 }
