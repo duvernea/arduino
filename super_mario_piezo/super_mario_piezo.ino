@@ -16,15 +16,15 @@ void setup(void)
 }
 void loop()
 {
-//  play(noteRunThrough, 
-//    sizeof(noteRunThrough)/sizeof(noteRunThrough[0]),
-//    defaultTimeSig);
-  play(mario_overworld_melody, 
-    sizeof(mario_overworld_melody)/sizeof(mario_overworld_melody[1]),
+  play(c_scale, 
+    sizeof(c_scale)/sizeof(c_scale[0]),
     defaultTimeSig);
-//  play(mario_underworld_melody, 
-//    sizeof(mario_underworld_melody)/sizeof(mario_underworld_melody[0]),
-//    defaultTimeSig);   
+//  play(mario_overworld_melody, 
+//    sizeof(mario_overworld_melody)/sizeof(mario_overworld_melody[1]),
+//    defaultTimeSig);
+  play(mario_underworld_melody, 
+    sizeof(mario_underworld_melody)/sizeof(mario_underworld_melody[0]),
+    defaultTimeSig);   
 }
 
 void play(Note song[], int numNotes, TimeSignature timeSig) {
@@ -42,7 +42,7 @@ void play(Note song[], int numNotes, TimeSignature timeSig) {
       
       buzz(melodyPin, song[thisNote].pitch, noteDuration);
       // to separate the notes, set a minimum time between them. + 30% seems to work well.
-      delay(noteDuration * 1.30);
+      delay(noteDuration * 1.1);
       // stop the tone playing:
       buzz(melodyPin, 0, noteDuration);
     }
