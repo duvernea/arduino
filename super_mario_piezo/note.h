@@ -96,4 +96,9 @@ struct Note {
     int duration;
 };
 
+struct TimeSignature {
+  int beat = 2;
+  int beatsPerMeasure = 4;
+};
+
 #endif
