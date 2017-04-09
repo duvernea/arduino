@@ -9,6 +9,7 @@
 TimeSignature defaultTimeSig;
 Note test[] = {{NOTE_C6, 4}, {NOTE_A6, 4}};
 
+=======
 void setup(void)
 {
   Serial.begin(9600);
@@ -32,6 +33,11 @@ void play(Note song[], int numNotes, TimeSignature timeSig) {
     play(mario_overworld_melody, numNotes);
     numNotes = sizeof(mario_underworld_melody)/sizeof(mario_underworld_melody[1]);
     play(mario_underworld_melody, numNotes);
+=======
+    play(mario_overworld_melody, 
+      sizeof(mario_overworld_melody)/sizeof(mario_overworld_melody[1]));
+    play(mario_underworld_melody, 
+      sizeof(mario_underworld_melody)/sizeof(mario_underworld_melody[0]));
 }
 
 void play(Note song[], int numNotes) {
@@ -44,14 +50,14 @@ void play(Note song[], int numNotes) {
       int secondsPerMeasure = (int) beatsPerMeasure/beatsPerSecond;
       // note duration in milliseconds
       int noteDuration = (int) 1000 * secondsPerMeasure / (song[thisNote].duration + 0.);
+=======
+      
       buzz(melodyPin, song[thisNote].pitch, noteDuration);
       // to separate the notes, set a minimum time between them. + 30% seems to work well.
       delay(noteDuration * 1.30);
       // stop the tone playing:
       buzz(melodyPin, 0, noteDuration);
-      Serial.println("buzzing separation");
     }
-    Serial.println("play loop complete");
 }
 
 void buzz(int targetPin, long frequency, long length) {
