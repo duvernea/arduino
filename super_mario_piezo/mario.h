@@ -50,8 +50,7 @@ Note mario_underworld_melody[] = {
 {NOTE_C4, 24},{NOTE_FS4, 24},{NOTE_F4, 24},{NOTE_E3, 24},{NOTE_AS4, 24},{NOTE_A4, 24},
 {NOTE_GS4, 12},{NOTE_DS4, 12},{NOTE_B3, 12},
 {NOTE_AS3, 12},{NOTE_A3, 12},{NOTE_GS3, 12},
-{0, 3},{0, 3},{0, 3}
-};
+{0, 3},{0, 3},{0, 3}};
 
 int melody[] = {
   NOTE_E7, NOTE_E7, 0, NOTE_E7,
