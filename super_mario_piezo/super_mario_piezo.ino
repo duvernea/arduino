@@ -7,6 +7,7 @@
 #define BPM 200
 
 TimeSignature defaultTimeSig;
+Note test[] = {{NOTE_C6, 4}, {NOTE_A6, 4}};
 
 void setup(void)
 {
@@ -27,6 +28,13 @@ void loop()
 }
 
 void play(Note song[], int numNotes, TimeSignature timeSig) {
+    int numNotes = sizeof(mario_overworld_melody)/sizeof(mario_overworld_melody[1]);
+    play(mario_overworld_melody, numNotes);
+    numNotes = sizeof(mario_underworld_melody)/sizeof(mario_underworld_melody[1]);
+    play(mario_underworld_melody, numNotes);
+}
+
+void play(Note song[], int numNotes) {
   // iterate over the notes of the melody:
     for (int thisNote = 0; thisNote < numNotes; thisNote++) {
       // note duration in milliseconds
@@ -36,13 +44,14 @@ void play(Note song[], int numNotes, TimeSignature timeSig) {
       int secondsPerMeasure = (int) beatsPerMeasure/beatsPerSecond;
       // note duration in milliseconds
       int noteDuration = (int) 1000 * secondsPerMeasure / (song[thisNote].duration + 0.);
-      
       buzz(melodyPin, song[thisNote].pitch, noteDuration);
       // to separate the notes, set a minimum time between them. + 30% seems to work well.
       delay(noteDuration * 1.30);
       // stop the tone playing:
       buzz(melodyPin, 0, noteDuration);
+      Serial.println("buzzing separation");
     }
+    Serial.println("play loop complete");
 }
 
 void buzz(int targetPin, long frequency, long length) {
@@ -51,7 +60,6 @@ void buzz(int targetPin, long frequency, long length) {
   // total cycles = frequency (cycle/sec) * number of seconds 
   // length in milliseconds -> convert to microseconds
   long numCycles = frequency * length / 1000;
-  // Serial.print(numCycles);
   for (long i = 0; i < numCycles; i++) { 
     digitalWrite(targetPin, HIGH);
     delayMicroseconds(pulseWidth); 
