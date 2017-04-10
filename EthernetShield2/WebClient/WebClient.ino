@@ -6,8 +6,15 @@
 
  */
 
+#include <Dhcp.h>
+#include <Dns.h>
+#include <Ethernet2.h>
+#include <EthernetClient.h>
+#include <EthernetServer.h>
+#include <EthernetUdp2.h>
+#include <util.h>
 #include <SPI.h>
-#include <Ethernet.h>
+
 
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x10, 0x02, 0xD1 };
 char server[] = "www.google.com";    // uses DNS
@@ -32,6 +39,7 @@ void setup() {
     // try to congifure using IP address instead of DHCP:
     Ethernet.begin(mac, ip);
   }
+
   // give the Ethernet shield a second to initialize:
   delay(1000);
   Serial.println("connecting...");
