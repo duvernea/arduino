@@ -1,98 +1,63 @@
 #include "note.h"
+#include "music_test.h"
 #include "mario.h"
 
 #define melodyPin 3
-int BPM = 150;
+#define SECONDS_PER_MINUTE 60
+#define BPM 200
 
-Note test_melody[] = {
-{NOTE_E7, 16 },
-{NOTE_D7, 8 }};
+TimeSignature defaultTimeSig;
+Note test[] = {{NOTE_C6, 4}, {NOTE_A6, 4}};
 
 void setup(void)
 {
-  pinMode(3, OUTPUT);//buzzer
-  pinMode(13, OUTPUT);//led indicator when singing a note
+  Serial.begin(9600);
+  pinMode(melodyPin, OUTPUT);   //buzzer
 }
 void loop()
 {
-  Note temp = test_melody[0];
-  int pitch = temp.pitch;
-  int duration = temp.duration;
-  //sing the tunes
-  sing(1);
-  sing(1);
-  sing(2);
+  play(c_scale, 
+    sizeof(c_scale)/sizeof(c_scale[0]),
+    defaultTimeSig);
+//  play(mario_overworld_melody, 
+//    sizeof(mario_overworld_melody)/sizeof(mario_overworld_melody[1]),
+//    defaultTimeSig);
+  play(mario_underworld_melody, 
+    sizeof(mario_underworld_melody)/sizeof(mario_underworld_melody[0]),
+    defaultTimeSig);   
 }
-int song = 0;
 
-void sing(int s) {
+void play(Note song[], int numNotes, TimeSignature timeSig) {
   // iterate over the notes of the melody:
-  song = s;
-  if (song == 2) {
-    Serial.println(" 'Underworld Theme'");
-    int size = sizeof(underworld_melody) / sizeof(int);
-    for (int thisNote = 0; thisNote < size; thisNote++) {
+    for (int thisNote = 0; thisNote < numNotes; thisNote++) {
+      // note duration in milliseconds
+      // currently assumes quarter note gets the beat
+      int beatsPerSecond = (int) (BPM / SECONDS_PER_MINUTE);
+      int secondsPerMeasure = (int) timeSig.beatsPerMeasure / beatsPerSecond;
+      // time signature beat length calc
+      int adjDuration = song[thisNote].duration / (timeSig.beat/4.0);
 
-      // to calculate the note duration, take one second
-      // divided by the note type.
-      //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-      // int noteDuration = 1000 / underworld_tempo[thisNote];
-      int noteDuration = (int)((1000 * (60 * 4 / BPM)) / underworld_tempo[thisNote] + 0.);
-
-
-      buzz(melodyPin, underworld_melody[thisNote], noteDuration);
-
-      // to distinguish the notes, set a minimum time between them.
-      // the note's duration + 30% seems to work well:
-      int pauseBetweenNotes = noteDuration * 1.30;
-      delay(pauseBetweenNotes);
-
+      // note duration in milliseconds
+      int noteDuration = (int) 1000 * secondsPerMeasure / (adjDuration + 0.);
+      
+      buzz(melodyPin, song[thisNote].pitch, noteDuration);
+      // to separate the notes, set a minimum time between them. + 30% seems to work well.
+      delay(noteDuration * 1.1);
       // stop the tone playing:
       buzz(melodyPin, 0, noteDuration);
-
     }
-
-  } else {
-
-    Serial.println(" 'Mario Theme'");
-    int size = sizeof(melody) / sizeof(int);
-    for (int thisNote = 0; thisNote < size; thisNote++) {
-
-      // to calculate the note duration, take one second
-      // divided by the note type.
-      //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-      // int noteDuration = 1000 / tempo[thisNote];
-      int noteDuration = (int)((1000 * (60 * 4 / BPM)) / tempo[thisNote] + 0.);
-
-
-      buzz(melodyPin, melody[thisNote], noteDuration);
-
-      // to distinguish the notes, set a minimum time between them.
-      // the note's duration + 30% seems to work well:
-      int pauseBetweenNotes = noteDuration * 1.30;
-      delay(pauseBetweenNotes);
-
-      // stop the tone playing:
-      buzz(melodyPin, 0, noteDuration);
-
-    }
-  }
 }
 
 void buzz(int targetPin, long frequency, long length) {
-  digitalWrite(13, HIGH);
-  long delayValue = 1000000 / frequency / 2; // calculate the delay value between transitions
-  //// 1 second's worth of microseconds, divided by the frequency, then split in half since
-  //// there are two phases to each cycle
-  long numCycles = frequency * length / 1000; // calculate the number of cycles for proper timing
-  //// multiply frequency, which is really cycles per second, by the number of seconds to
-  //// get the total number of cycles to produce
-  for (long i = 0; i < numCycles; i++) { // for the calculated length of time...
-    digitalWrite(targetPin, HIGH); // write the buzzer pin high to push out the diaphram
-    delayMicroseconds(delayValue); // wait for the calculated delay value
-    digitalWrite(targetPin, LOW); // write the buzzer pin low to pull back the diaphram
-    delayMicroseconds(delayValue); // wait again or the calculated delay value
+  // 1E6 microseconds, divided by freq, div by 2 for 50% duty cycle
+  long pulseWidth = 1E6 / (frequency + 0.0) / 2;
+  // total cycles = frequency (cycle/sec) * number of seconds 
+  // length in milliseconds -> convert to microseconds
+  long numCycles = frequency * length / 1000;
+  for (long i = 0; i < numCycles; i++) { 
+    digitalWrite(targetPin, HIGH);
+    delayMicroseconds(pulseWidth); 
+    digitalWrite(targetPin, LOW); 
+    delayMicroseconds(pulseWidth); 
   }
-  digitalWrite(13, LOW);
-
 }

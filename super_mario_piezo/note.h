@@ -1,3 +1,5 @@
+#ifndef NOTE_H
+#define NOTE_H
 
 #define NOTE_B0  31
 #define NOTE_C1  33
@@ -89,7 +91,14 @@
 #define NOTE_D8  4699
 #define NOTE_DS8 4978
 
-typedef struct{
+struct Note {
     int pitch;
     int duration;
-} Note;
+};
+
+struct TimeSignature {
+  int beat = 4;
+  int beatsPerMeasure = 4;
+};
+
+#endif
