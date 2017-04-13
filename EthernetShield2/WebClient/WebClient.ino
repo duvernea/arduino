@@ -5,7 +5,6 @@
  * Ethernet shield attached to pins 10, 11, 12, 13 (Digital I/O
 
  */
-
 #include <Dhcp.h>
 #include <Dns.h>
 #include <Ethernet2.h>
@@ -14,10 +13,13 @@
 #include <EthernetUdp2.h>
 #include <util.h>
 #include <SPI.h>
+#include <EEPROM.h>
+#include <stdio.h>
 
 
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x10, 0x02, 0xD1 };
 char server[] = "www.google.com";    // uses DNS
+int EEPROM_COUNTER = 0;
 
 // Set the static IP address to use if the DHCP fails to assign
 IPAddress ip(192, 168, 1, 255);
@@ -48,7 +50,8 @@ void setup() {
   if (client.connect(server, 80)) {
     Serial.println("connected");
     // Make a HTTP request:
-    client.println("GET /search?q=arduino HTTP/1.1");
+    client.println("GET /index.html HTTP/1.1");
+    // client.println("GET /search?q=arduino HTTP/1.1");
     client.println("Host: www.google.com");
     client.println("Connection: close");
     client.println();
@@ -56,6 +59,14 @@ void setup() {
     // if you didn't get a connection to the server:
     Serial.println("connection failed");
   }
+  // print out what is stored in EEPROM:
+  Serial.println("setup() running. Data stored in EEPROM:");
+  int addr = 0;
+  for (addr=0; addr<1024; addr++) {
+    char c = EEPROM.read(addr);
+    Serial.print(c); 
+  }
+  
 }
 
 void loop() {
@@ -63,7 +74,15 @@ void loop() {
   // from the server, read them and print them:
   if (client.available()) {
     char c = client.read();
-    Serial.print(c);
+    // 1024 bytes EEPROM on the
+    if (EEPROM_COUNTER < 1024) {
+//      char buffer[20];
+//      sprintf(buffer, "EEPROM COUNTER %i", EEPROM_COUNTER);
+//      Serial.println(buffer);
+      EEPROM.write(EEPROM_COUNTER, c);
+    }
+    EEPROM_COUNTER++;
+    // Serial.print(c);
   }
 
   // if the server's disconnected, stop the client:
